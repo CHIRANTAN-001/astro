@@ -1,0 +1,54 @@
+---
+import type { CollectionEntry } from "astro:content";
+import { getCollection } from "astro:content";
+import Layout from "../../layouts/Layout.astro";
+import Main from "../../components/main.astro";
+import H1 from "../../components/H1.astro";
+import "../../styles/global.css";
+import { Image } from "astro:assets";
+import { getEntry } from "astro:content";
+
+//   const posts = await getCollection("posts");
+//   const paths = posts.map((post) => {
+//     return {
+//       params: {
+//         slug: post.slug,
+//       },
+//       props: {
+//         post,
+//       },
+//     };
+//   });
+//   return paths;
+// };
+
+const { slug } = Astro.params;
+const post = await getEntry("posts", slug as string);
+
+type Props = {
+  post: CollectionEntry<"posts">;
+};
+
+if (!post) {
+  return Astro.redirect("/404");
+}
+const { Content } = await post.render();
+---
+
+<Layout title={post.data.title}>
+  <Main>
+    <H1 text={post.data.title} />
+    <Image
+      src={post.data.image}
+      width={1024}
+      height={1024 / 1.5}
+      alt={post.data.title}
+      class="rounded-2xl shadow-xl mb-4 aspect-16/9 object-cover"
+    />
+    <div
+      class="prose prose-2xl overflow-visible relative pb-20 w-full text-white prose-h1:text-white prose-h2:text-white prose-h3:text-white prose-blockquote: prose-strong:text-white prose-table:text-white prose-th:text-white "
+    >
+      <Content />
+    </div>
+  </Main>
+</Layout>

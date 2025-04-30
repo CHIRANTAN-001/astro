@@ -1,0 +1,95 @@
+---
+author: Chirantan Das
+categories: ["tech insights"]
+date: 08/10/2021
+featured: false
+image: ./images/og-nodeJS-vs-golang.png
+title: "Golang vs Node.js: A Performance Comparison"
+slug: "golang-vs-nodejs-performance-comparison"
+---
+
+When choosing a backend runtime for building scalable and performant web applications, **Go (Golang)** and **Node.js** are two of the most popular choices. While both have their own strengths and use cases, their performance characteristics can differ significantly depending on the workload.
+
+
+## Introduction
+
+Go is a statically typed, compiled language developed by Google with a focus on simplicity, concurrency, and high performance. Node.js, on the other hand, is a JavaScript runtime built on Chrome's V8 engine, known for its non-blocking, event-driven architecture.
+
+Both can handle large-scale systems effectively, but understanding their performance profiles can help you make the best decision for your project.
+
+## Benchmark Comparison
+
+Here’s a side-by-side comparison based on key performance criteria:
+
+| Metric                  | Go (Golang)                  | Node.js                          |
+|-------------------------|------------------------------|----------------------------------|
+| **Startup Time**        | Fast (compiled binary)       | Moderate (interpreted)           |
+| **Throughput (req/sec)**| High                         | Moderate to high                 |
+| **Memory Usage**        | Low                          | Higher (due to V8 + JS overhead) |
+| **Concurrency Model**   | Goroutines (lightweight)     | Event Loop (single-threaded)     |
+| **Scalability**         | Excellent                    | Good, with care                  |
+| **Development Speed**   | Moderate                     | Fast (JS ecosystem)              |
+| **Error Handling**      | Verbose but strict           | Flexible, sometimes error-prone  |
+
+## Use Case Performance Scenarios
+
+Here are some example implementations and how they perform:
+
+### HTTP Server (Simple API)
+
+- **Go Implementation**
+  ```go
+  package main
+  import (
+    "fmt"
+    "net/http"
+  )
+
+  func handler(w http.ResponseWriter, r *http.Request) {
+    fmt.Fprintf(w, "Hello from Go!")
+  }
+
+  func main() {
+    http.HandleFunc("/", handler)
+    http.ListenAndServe(":8080", nil)
+  }
+  ```
+
+- **Node.js Implementation**
+  ```js
+  const http = require('http');
+
+  const server = http.createServer((req, res) => {
+   res.writeHead(200, {'Content-Type': 'text/plain'});
+   res.end('Hello from Node.js!');
+  });
+
+  server.listen(8080);
+
+### File I/O Example
+
+- **Go Implementation**
+  ```go
+  import (
+   "io/ioutil"
+   "log"
+  )
+
+  func main() {
+     data, err := ioutil.ReadFile("file.txt")
+     if err != nil {
+        log.Fatal(err)
+     }
+     println(string(data))
+  }
+
+
+- **Node.js Implementation**
+  ```js
+  const fs = require('fs');
+
+  fs.readFile('file.txt', 'utf8', (err, data) => {
+    if (err) throw err;
+    console.log(data);
+  });
+
